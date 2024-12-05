@@ -1,28 +1,3 @@
-// const express = require('express');
-// const { connectToDatabase, sql } = require('./dbConfig');
-
-// const app = express();
-// const port = 3000;
-
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
-
-// connectToDatabase();
-
-// app.get('/api/users', async (req, res) => {
-//   try {
-//     const result = await sql.query('SELECT * FROM Users');
-//     res.json(result.recordset);
-//   } catch (err) {
-//     console.error('Error fetching data:', err);
-//     res.status(500).send('Internal Server Error');
-//   }
-// });
-
-// app.listen(port, () => {
-//   console.log(`Server running at http://localhost:${port}`);
-// });
-
 const express = require("express");
 const { connectToDatabase, sql } = require("./dbConfig");
 
@@ -47,14 +22,15 @@ app.get("/api/users", async (req, res) => {
 
 // Add a new user
 app.post("/api/users", async (req, res) => {
-  const {UserID, name, email, age } = req.body;
-  if (!name || !email || !age) {
-    return res.status(400).send("Name, Email, and Age are required");
+  const { UserID, name, email, age } = req.body;
+
+  if (!UserID || !name || !email || !age) {
+    return res.status(400).send("UserID, Name, Email, and Age are required");
   }
 
   try {
     await sql.query(
-      `INSERT INTO Users (Name, Email, Age) VALUES ('${UserID}', '${name}', '${email}', ${age})`
+      `INSERT INTO Users (UserID, Name, Email, Age) VALUES ('${UserID}', '${name}', '${email}', ${age})`
     );
     res.status(201).send("User added successfully");
   } catch (err) {
@@ -114,5 +90,5 @@ app.put("/api/users/:id", async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server running at http://20.197.9.231/:${port}`);
+  console.log(`Server running at http://20.197.9.231/:${port} `);
 });
